@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"
+    ></script>
+
+
+    <link th:href="@{css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container px-3 px-lg-4 mt-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="countriesList:${allCountriesList}">
+            <div class="card text-center shadow-0 mb-3" style="max-width: 18rem;">
+                <div class="card-header"><span th:text="${countriesList.country}"></span></div>
+                <div class="card-body">
+                    <p class="card-text">Total Confirmed Cases: <span th:text="${countriesList.totalConfirmed}"></span></p>
+                    <p class="card-text">Total Recovered Cases: <span th:text="${countriesList.totalRecovered}"></span></p>
+                    <p class="card-text">Total Deaths Cases: <span th:text="${countriesList.totalDeaths}"></span></p>
+                    <p class="card-text">Date: <span th:text="${countriesList.date}"></span></p>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-info">Middle</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
