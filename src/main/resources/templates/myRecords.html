@@ -36,21 +36,21 @@
 
 <div class="container px-3 px-lg-4 mt-4">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" th:each="countriesList:${allCountriesList}">
+        <div class="col" th:each="records:${allRecords}">
             <div class="card text-center shadow-0 mb-3" style="max-width: 18rem;">
-                <form method="post" action="/add">
-                <div class="card-header" ><span th:text="${countriesList.country}"></span></div>
-                    <input type="hidden" name="country" th:value="${countriesList.country}">
-                <div class="card-body">
-                    <p class="card-text">Total Confirmed Cases: <span th:text="${countriesList.totalConfirmed}"></span></p>
-                    <p class="card-text">Total Recovered Cases: <span th:text="${countriesList.totalRecovered}"></span></p>
-                    <p class="card-text">Total Deaths Cases: <span th:text="${countriesList.totalDeaths}"></span></p>
-                    <p class="card-text">Date: <span name="date"  th:text="${countriesList.date}"></span></p>
-                    <input type="hidden" name="date" th:value="${countriesList.date}">
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-info">Add</button>
+                <form method="post" action="/deleteRecord">
+                    <div class="card-header" ><span th:text="${records.name}"></span></div>
+                    <input type="hidden" name="name" th:value="${records.name}">
+                    <div class="card-body">
+<!--                        <p class="card-text">Total Confirmed Cases: <span th:text="${countriesList.totalConfirmed}"></span></p>-->
+<!--                        <p class="card-text">Total Recovered Cases: <span th:text="${countriesList.totalRecovered}"></span></p>-->
+<!--                        <p class="card-text">Total Deaths Cases: <span th:text="${countriesList.totalDeaths}"></span></p>-->
+                        <p class="card-text">Date: <span name="date"  th:text="${records.date}"></span></p>
+<!--                        <input type="hidden" name="date" th:value="${countriesList.date}">-->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -58,5 +58,6 @@
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 @EnableWebSecurity
@@ -18,19 +19,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder managerBuilder) throws Exception{
-        managerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        managerBuilder.inMemoryAuthentication()
-                .withUser("admin")
-                .password(passwordEncoder().encode("1234")).roles("ADMIN");
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 
+    @Override
+    protected void configure(final AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+        authManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,9 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/login", "/signup","/search","/allCountries").permitAll()
+                .antMatchers("/login", "/signup").permitAll()
                 .antMatchers("/css/style.css","/js/bootstrap.js","carouselExampleControls","/css/style.scss").permitAll()
-                .antMatchers("/admin").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -55,12 +57,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID");
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("1234").roles("USER")
-                .and()
-                .withUser("admin").password("1234").roles("ADMIN");
-    }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .cors().disable()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/login", "/signup").permitAll()//"/search","/allCountries","/add"
+//                .antMatchers("/css/style.css","/js/bootstrap.js","carouselExampleControls","/css/style.scss").permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/perform_login")
+//                .defaultSuccessUrl("/allCountries", true)
+//                .failureUrl("/error")
+//                .and()
+//                .logout()
+//                .logoutUrl("/perform_logout")
+//                .deleteCookies("JSESSIONID");
+//
+//
+//    }
+
+
+//    http.cors().disable().csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/login*").permitAll()
+//                .antMatchers("/signup*").permitAll()
+//                .antMatchers("/style.css").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/perform_login")
+//                .defaultSuccessUrl("/")
+//                .failureUrl("/login")
+//                .and()
+//                .logout()
+//                .logoutUrl("/perform_logout")
+//                .logoutSuccessUrl("/login")
+//                .deleteCookies("JSESSIONID");
 }

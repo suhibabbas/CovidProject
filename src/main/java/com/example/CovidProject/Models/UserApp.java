@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,6 +20,7 @@ public class UserApp  implements UserDetails {
 
     @Column(unique = true,nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String password;
 
@@ -26,9 +28,43 @@ public class UserApp  implements UserDetails {
 
     }
 
-    public String getUsername() {
-        return username;
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "userFavRecipes",
+//            joinColumns = @JoinColumn(name = "Recipe_id"),
+//            inverseJoinColumns = @JoinColumn(name = "User_id")
+//    )
+//    List<RecipeModel> favoriteRecipeModels;
+
+
+//    public List<MyCountries> getMyCountries() {
+//        return myCountries;
+//    }
+//
+//    public void setMyCountries(List<MyCountries> myCountries) {
+//        this.myCountries = myCountries;
+//    }
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "userAppsCountries",
+//            joinColumns = @JoinColumn(name="country_id"),
+//            inverseJoinColumns = @JoinColumn(name = "User_id")
+//    )
+//    List<MyCountries> myCountries;
+
+
+    public List<MyCountries> getCountries() {
+        return countries;
     }
+
+    public void setCountries(List<MyCountries> countries) {
+        this.countries = countries;
+    }
+
+    @OneToMany(mappedBy = "userCountries")///////////////////////////
+    List<MyCountries> countries;
 
     public void setUsername(String username) {
         this.username = username;
@@ -39,16 +75,22 @@ public class UserApp  implements UserDetails {
         this.password = password;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
@@ -73,6 +115,18 @@ public class UserApp  implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return "UserApp{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
