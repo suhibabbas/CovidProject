@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Title</title>
 
     <!-- Font Awesome -->
     <link
@@ -30,42 +30,76 @@
     <link th:href="@{css/style.css}" rel="stylesheet">
 </head>
 <body>
+
 <!-- Navigation-->
 <div th:replace="fragments/header :: header"></div>
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--    <div class="container-fluid">-->
-<!--        <a class="navbar-brand" href="#">Navbar</a>-->
-<!--        <button-->
-<!--                class="navbar-toggler"-->
-<!--                type="button"-->
-<!--                data-mdb-toggle="collapse"-->
-<!--                data-mdb-target="#navbarNav"-->
-<!--                aria-controls="navbarNav"-->
-<!--                aria-expanded="false"-->
-<!--                aria-label="Toggle navigation"-->
-<!--        >-->
-<!--            <i class="fas fa-bars"></i>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarNav">-->
-<!--            <ul class="navbar-nav">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link active" aria-current="page" href="#">Home</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Features</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Pricing</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link disabled"-->
-<!--                    >Disabled</a-->
-<!--                    >-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
+
+
+<section class="vh-100 bg-image" style="background-image: url('https://scontent.famm10-1.fna.fbcdn.net/v/t1.15752-9/278118930_4950896538350707_6555017730623196199_n.jpg?stp=dst-jpg_p1080x2048&_nc_cat=105&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeE1slmysIPE_jxaD9C1Khmpj44crV7n4vaPjhytXufi9jkMbnBqrtJMAQBIqDdaFEPWhtSNuGDZDajD7-qNDi-g&_nc_ohc=Qhe-QCrA_JwAX-ffjas&_nc_ht=scontent.famm10-1.fna&oh=03_AVL9AeHJJJmfrLxUPzwheS1NWV5lGAQpVQk2mG58TaIW5Q&oe=627C2FCB');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+                            <form action="/signup" method="post">
+
+                                <div class="input-group mb-4">
+                                    <input
+                                            type="password"
+                                            class="form-control"
+                                            placeholder="password"
+                                            aria-label="password"
+                                            name="password"
+                                            aria-describedby="basic-addon1"
+                                    />
+                                </div>
+
+                                <div class="input-group mb-4">
+                                    <input
+                                            type="password"
+                                            class="form-control"
+                                            placeholder="password"
+                                            aria-label="password"
+                                            name="password"
+                                            aria-describedby="basic-addon1"
+                                    />
+                                </div>
+
+                                <div class="form-check d-flex justify-content-center mb-5">
+                                    <input
+                                            class="form-check-input me-2"
+                                            type="checkbox"
+                                            value=""
+                                            id="form2Example3cg"
+                                            required
+                                    />
+                                    <label class="form-check-label" >
+                                        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                                    </label>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                </div>
+
+                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login" class="fw-bold text-body"><u>Login here</u></a></p>
+
+                                <hr class="mx-n3">
+
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!--<section class="h-100 gradient-form" style="background-color: #eee;">-->
 <!--    <div class="container py-5 h-100">-->
@@ -91,8 +125,8 @@
 <!--                                    <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>-->
 <!--                                </div>-->
 
-<!--                                <form>-->
-<!--                                    <p>Please login to your account</p>-->
+<!--                                <form action="/signup" method="post">-->
+<!--                                    <p>Please Enter a uneiq </p>-->
 
 <!--                                    &lt;!&ndash;                                    <div class="form-outline mb-4">&ndash;&gt;-->
 <!--                                    &lt;!&ndash;                                        <input type="email" id="form2Example11" class="form-control"&ndash;&gt;-->
@@ -106,6 +140,7 @@
 <!--                                                class="form-control"-->
 <!--                                                placeholder="Username"-->
 <!--                                                aria-label="Username"-->
+<!--                                                name="username"-->
 <!--                                                aria-describedby="basic-addon1"-->
 <!--                                        />-->
 <!--                                    </div>-->
@@ -116,18 +151,18 @@
 <!--                                                class="form-control"-->
 <!--                                                placeholder="password"-->
 <!--                                                aria-label="password"-->
+<!--                                                name="password"-->
 <!--                                                aria-describedby="basic-addon1"-->
 <!--                                        />-->
 <!--                                    </div>-->
 
 <!--                                    <div class="text-center pt-1 mb-5 pb-1">-->
-<!--                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log-->
-<!--                                            in</button>-->
+<!--                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Signup</button>-->
 <!--                                        <a class="text-muted" href="#!">Forgot password?</a>-->
 <!--                                    </div>-->
 
 <!--                                    <div class="d-flex align-items-center justify-content-center pb-4">-->
-<!--                                        <p class="mb-0 me-2">Don't have an account?</p>-->
+<!--                                        <p class="mb-0 me-2">Have already an account?</p>-->
 <!--                                        <button type="button" class="btn btn-outline-danger">Create new</button>-->
 <!--                                    </div>-->
 
@@ -141,80 +176,8 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</section>-->
-<div class="container px-4 px-lg-5 mt-5">
-    <div class="row row-cols-1 row-cols-md-3 g-4" th:each="totals:${totals}">
-    <div class="col">
-        <div class="card bg-warning mb-3"  style="max-width: 18rem;">
-            <div class="card-header">Total Confirmed</div>
-            <div class="card-body">
-                <h5 class="card-title"><span th:text="${totals.totalConfirmed}"></span></h5>
-<!--                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-white bg-danger mb-3"  style="max-width: 18rem;">
-            <div class="card-header">Total Deaths</div>
-            <div class="card-body">
-                <h5 class="card-title"><span th:text="${totals.totalDeaths}"></span></h5>
-<!--                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-            <div class="card-header">Total Recovered</div>
-            <div class="card-body">
-                <h5 class="card-title"><span th:text="${totals.totalRecovered}"></span></h5>
-<!--                <p class="card-text">Some quick example</p>-->
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 
-<section class="container">
-    <form class="row" method="post" action="/search">
-        <div class="col-3">
+<div th:replace="fragments/footer :: footer"></div>
 
-            <div class="input-group mb-3 ">
-
-                <span class="input-group-text" >From</span>
-                <input type="date" name="fromDate" id="dateFrom" placeholder="From" class="form-control form-control-lg bg-success p-2 text-dark bg-opacity-10" required />
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="input-group mb-3 ">
-                <span class="input-group-text">To</span>
-                <input type="date" name="toDate" id="dateTo" placeholder="To" class="form-control form-control-lg bg-success p-2 text-dark bg-opacity-10" required />
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="input-group mb-3 ">
-                <input type="text" name="countryName" id="countryname" placeholder="Type The Country Name" class="form-control form-control-lg bg-success p-2 text-dark bg-opacity-10" required />
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="input-group mb-3 ">
-                <button type="submit" class="btn btn-outline-primary btn-lg" data-mdb-ripple-color="dark">Search</button>
-            </div>
-        </div>
-    </form>
-</section>
-
-<div class="container px-3 px-lg-4 mt-4">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" th:each = "covid:${covidList}">
-            <div class="card border border-info shadow-0 mb-3" style="max-width: 18rem;">
-                <div class="card-header"><span th:text="${covid.country}"></span></div>
-                <div class="card-body">
-                    <h5 class="card-title"><span th:text="${covid.date}"></span></h5>
-                    <p class="card-text"><span th:text="${covid.cases}"</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
 </body>
 </html>

@@ -4,8 +4,15 @@ import com.example.CovidProject.JsonData.Countries;
 import com.example.CovidProject.JsonData.Country;
 import com.example.CovidProject.JsonData.Root;
 import com.example.CovidProject.JsonData.Totals;
+import com.example.CovidProject.Models.MyCountries;
+import com.example.CovidProject.Models.UserApp;
+import com.example.CovidProject.Repositories.MyCountriesRepository;
+import com.example.CovidProject.Repositories.UserAppRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +23,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -24,6 +32,17 @@ public class MainController {
     String to = "";
     String country = "";
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    private final UserAppRepository userAppRepository;
+    private final MyCountriesRepository myCountriesRepository;
+
+    public MainController(UserAppRepository userAppRepository, MyCountriesRepository myCountriesRepository) {
+        this.userAppRepository = userAppRepository;
+        this.myCountriesRepository = myCountriesRepository;
+    }
+
+
     @GetMapping("/")
     public String getHomePage(Model model) throws IOException {
 
@@ -31,6 +50,8 @@ public class MainController {
             Country[] countries = ReadFromCountryAPI();
             model.addAttribute("covidList", countries);
         }
+
+
 
         Totals totals = ReadFromAPI();
 
@@ -48,17 +69,69 @@ public class MainController {
     @GetMapping("/allCountries")
     public String getAllCountries(Model model) throws IOException {
 
+        final String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserApp userApp = userAppRepository.findUserAppsByUsername(currentUser);
+
+        List<MyCountries> allUserCountries = myCountriesRepository.findAll();
+
+
+
         Root root = allCountriesAPI();
 
-        for (Countries c: root.countries
-             ) {
-            System.out.println(c.country);
+        if(root==null){
+            root = allCountriesFile("test.json");
         }
+
+//        for (Countries c: root.countries
+//             ) {
+//            System.out.println(c.country);
+//        }
         model.addAttribute("allCountriesList",root.countries);
 
         return "allCountries";
     }
 
+    @GetMapping("/login")
+    public String loginPage(){
+        return "login";
+    }
+
+    @GetMapping("/signup")
+    public String signupPage(){
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String signupNewUser(@RequestParam String username,@RequestParam String password){
+        UserApp userApp = userAppRepository.findUserAppsByUsername(username) ;
+        if(userApp != null){
+            return "signup";
+        }
+        UserApp userApp1 = new UserApp(username,passwordEncoder.encode(password));
+        userAppRepository.save(userApp1);
+
+        return "login";
+    }
+
+    @PostMapping("/add")
+    public RedirectView add(@RequestParam String country,@RequestParam String date){
+        System.out.println(country + date);
+
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserApp userApp = userAppRepository.findUserAppsByUsername(currentUser);
+
+        MyCountries myCountries = new MyCountries(country,date);
+
+        System.out.println(myCountries.getDate()+"////////////////////////////////////////////////////////////////");
+        userApp.getCountries().add(myCountries);
+        myCountries.setUserCountries(userApp);
+        myCountriesRepository.save(myCountries);
+
+
+        System.out.println(myCountries.getUserCountries().getUsername()+"00000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+            return new RedirectView("allCountries");
+    }
 
     @PostMapping("/search")
     public RedirectView search(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String countryName){
@@ -67,6 +140,33 @@ public class MainController {
         to = toDate;
         country = countryName;
         return new RedirectView("/");
+    }
+
+
+    @GetMapping("/myRecords")
+    public String userRecords(Model model){
+        final String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserApp userApp = userAppRepository.findUserAppsByUsername(currentUser);
+
+        model.addAttribute("allRecords",userApp.getCountries());
+
+        return "myRecords";
+    }
+
+    @PostMapping("/deleteRecord")
+    public RedirectView deleteRecord(@RequestParam String name ){
+
+        final String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserApp userApp = userAppRepository.findUserAppsByUsername(currentUser);
+
+        for (MyCountries m: userApp.getCountries()
+             ) {
+            if(m.getName().equals(name)){
+                myCountriesRepository.deleteById(m.getCountry_id());
+            }
+        }
+
+        return new RedirectView("/myRecords");
     }
 
     public Country[] ReadFromCountryAPI() throws IOException {
@@ -85,7 +185,7 @@ public class MainController {
             //Get the data
             dataJson = urlBuffered.readLine();
 //            System.out.println(dataJson);
-            WriteOnJsonFile(dataJson);
+//            WriteOnJsonFile(dataJson);
         }catch (Exception e){
         }
 
@@ -114,7 +214,7 @@ public class MainController {
             //Get the data
             dataJson = urlBuffered.readLine();
 //            System.out.println(dataJson);
-            WriteOnJsonFile(dataJson);
+//            WriteOnJsonFile(dataJson);
         }catch (Exception e){
         }
 
@@ -143,7 +243,7 @@ public class MainController {
             //Get the data
             dataJson = urlBuffered.readLine();
             System.out.println(dataJson);
-            WriteOnJsonFile(dataJson);
+//            WriteOnJsonFile(dataJson);
         }catch (Exception e){
         }
 
@@ -171,5 +271,20 @@ public class MainController {
         try(FileWriter fileWriter = new FileWriter(file)) {
             gson.toJson(countries,fileWriter);
         }
+    }
+
+    public static Root allCountriesFile(String fileName){
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(fileName);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        Gson gson = gsonBuilder.create();
+        Root root = gson.fromJson(fileReader,Root.class);
+
+        return  root;
     }
 }
